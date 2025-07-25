@@ -1,0 +1,42 @@
+# create a 2gb partition in sdb as sdb1, format to ext4, and mount to /salesdata
+---
+- name: create partition and format
+  hosts: node1.example.com
+  become: true
+  tasks:
+    - name: Create a new partition on /dev/sdb
+      parted:
+        device: /dev/sdb
+        number: 1
+        state: present
+        part_type: primary
+        fs_type: ext4
+        part_start: 0%
+        part_end: 2GB
+
+    - name: Unmount /dev/sdb1 if mounted
+      mount:
+        path: /salesdata
+        src: /dev/sdb1
+        state: unmounted
+      ignore_errors: true
+
+    - name: Wipe old filesystem signatures from /dev/sdb1
+      command: wipefs -a /dev/sdb1
+      ignore_errors: true
+
+    - name: Format the partition to ext4
+      filesystem:
+        fstype: ext4
+        dev: /dev/sdb1
+
+    - name: Create mount point directory
+      file:
+        path: /salesdata
+        state: directory
+    - name: Mount the partition to /salesdata and make fstab entry
+      mount:
+        path: /salesdata
+        src: /dev/sdb1
+        fstype: ext4
+        state: mounted

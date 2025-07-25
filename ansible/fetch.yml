@@ -1,0 +1,33 @@
+---
+- name: Fetch /etc/resolv.conf from all nodes
+  hosts: all
+  become: true
+  tasks:
+    - name: Fetch /etc/resolv.conf to master /tmp folder
+      fetch:
+        src: /etc/resolv.conf
+        dest: /tmp/
+        fail_on_missing: yes
+        mode: '0644'
+        validate_checksum: yes
+      delegate_to: localhost
+      become: false
+      run_once: false
+      register: fetch_result
+
+    - name: Check if fetched file exists on master
+      local_action:
+        module: stat
+        args:
+          path: /tmp/{{ inventory_hostname }}/etc/resolv.conf
+      register: file_stat
+      become: false
+      run_once: false
+
+    - name: Append hostname and fetched file to /tmp/resolv.conf.all on master
+      local_action: shell echo "===== {{ inventory_hostname }} =====" >> /tmp/resolv.conf.all && cat /tmp/{{ inventory_hostname }}/etc/resolv.conf >> /tmp/resolv.conf.all
+      become: false
+      when:
+        - fetch_result is succeeded
+        - file_stat.stat.exists
+      run_once: false

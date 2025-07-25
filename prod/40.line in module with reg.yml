@@ -1,0 +1,14 @@
+- name: fetch disk report , alter the motd
+  hosts: node1.example.com
+  tasks:
+    - name: append new new line
+      ansible.builtin.lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        line: "#this line added or append at the end ...."
+
+    - name: append new new line
+      ansible.builtin.lineinfile:
+        path: /etc/httpd/conf/httpd.conf
+        line: "Listen 8080"
+        regex: "^Listen 80*"
+    

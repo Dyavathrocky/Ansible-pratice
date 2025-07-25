@@ -1,0 +1,11 @@
+- name: "Play1 install {{ pkg }} server"
+  hosts: web
+  tasks:
+    - name: "install {{ pkg }} app"
+      dnf:
+        name: "{{ pkg }}"
+        state: "{{ deploy }}"
+    - name: "start {{ pkg }} service"
+      service:
+        name: "{{ pkg }}" 
+        state: started

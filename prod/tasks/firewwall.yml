@@ -1,0 +1,7 @@
+- name: set firewall settings
+  ansible.posix.firewalld:
+    #service: "{{fservice}} "
+    port: "{{fport}}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true

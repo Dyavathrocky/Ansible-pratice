@@ -1,0 +1,6 @@
+- name: Deploy web server
+  hosts: all
+  roles:
+    - role: web
+      vars:
+        web_server: htpd

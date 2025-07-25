@@ -1,0 +1,9 @@
+- name: ping testing
+  hosts: all
+  tasks:
+    - name: use ping module for testing
+      ping:
+    - name : used ping from node1
+      ping:
+      delegate_to: node1.example.com
+      when: inventory_hostname == "node2.example.com"

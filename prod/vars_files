@@ -1,0 +1,13 @@
+userslist:
+  - un: w131
+    sh: /bin/sh
+    cmnt: webuser14
+    Pass: test1234
+  - un: w231
+    sh: /bin/nologin
+    cmnt: wbsusre999
+    Pass: test123
+  - un: w331
+    sh: /bin/bash
+    cmnt: test123
+    Pass: tets1222

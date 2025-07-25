@@ -1,0 +1,18 @@
+- name: Append remote file to single file on master
+  hosts: all
+  gather_facts: no
+  tasks:
+
+    - name: Read remote file content
+      ansible.builtin.slurp:
+        src: /tmp/dfreport.txt
+      register: slurped_file
+
+    - name: Decode and append to master file
+      ansible.builtin.local_action:
+        module: ansible.builtin.blockinfile
+        path: /tmp/combined_dfreport.txt
+        block: |
+          #### Report from {{ inventory_hostname }} ####
+          {{ slurped_file.content | b64decode }}
+      delegate_to: localhost

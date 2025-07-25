@@ -1,0 +1,39 @@
+- name: work with file ops
+  hosts: all
+  tasks:
+    - name: create a dile
+      file:
+        path: /tmp/data1.txt
+        state: touch
+    - name: copy
+      copy:
+        src: sample.txt
+        dest: /tmp/appsettings.txt
+    - name: remote copy
+      copy:
+        src: /tmp/appsettings.txt
+        dest: /mnt/appset1
+        remote_src: yes
+    - name: report to genrate the target host disk free
+      shell: df -h > /tmp/dfreport.txt
+      register: r1
+      
+    - name: get rport to source host
+      ansible.builtin.fetch:
+        src: /tmp/dfreport.txt
+        dest: /tmp/{{ ansible_host }}.dfreport.txt
+        flat: yes
+
+    - name: Read remote file content
+      ansible.builtin.slurp:
+        src: /tmp/dfreport.txt
+      register: slurped_file
+
+    - name: Decode and append to master file
+      ansible.builtin.local_action:
+        module: ansible.builtin.blockinfile
+        path: /tmp/combined_dfreport.txt
+        block: |
+          #### Report from {{ inventory_hostname }} ####
+              {{ slurped_file.content | b64decode }}
+          delegate_to: localhost

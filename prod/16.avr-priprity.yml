@@ -1,0 +1,7 @@
+- name: testin var priorityu
+  hosts: node1.example.com
+  tasks:
+    - name: show debug var info
+      debug:
+        msg:
+          - "this vailue id from "{{ v1 }}"

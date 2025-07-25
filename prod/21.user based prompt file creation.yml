@@ -1,0 +1,19 @@
+- name: creating user base file creation
+  hosts: web
+
+  vars_files:
+    - secrets.yml
+
+  vars_prompt:
+    - name: user_note
+      prompt: "Enter your note to include in the file"
+      private: false
+
+  tasks:
+    - name: create file with secrets and user input
+      copy:
+        dest: "{{ file_path }}"
+        content: |
+          {{ file_content }}
+          User note: {{ user_note }}
+

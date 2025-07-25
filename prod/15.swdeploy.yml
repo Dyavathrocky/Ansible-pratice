@@ -1,0 +1,7 @@
+- name: "Play1 install {{ pkg }} server"
+  hosts: all
+  tasks:
+    - name: "install {{ pkg }} app"
+      dnf:
+        name: "{{ pkg }}"
+        state: latest

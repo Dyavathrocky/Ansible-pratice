@@ -1,0 +1,10 @@
+--- #create a playbook to chck website reachability
+
+- name: test http service working
+  hosts: localhost
+  become: False
+  tasks:
+    - name: check url reachability
+      uri:
+        url: http://node1.example.com
+        status_code: 200

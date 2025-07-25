@@ -1,0 +1,15 @@
+- name: deploy app based on RAM
+  hosts: all
+  vars:
+    install: false
+  tasks:
+    - name: install httpd of var install is true
+      dnf:
+        name: httpd
+        state: latest
+      when: install
+    - name: install if var is true
+      dnf:
+        name: dialog
+        state: latest
+      when: install

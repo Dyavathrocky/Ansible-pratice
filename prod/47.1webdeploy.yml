@@ -1,0 +1,25 @@
+---
+- name: Play1 install httpd server app and start/enable service
+  hosts: web
+  tasks:
+    - name: install httpd app
+      tags: install
+      dnf:
+        name: httpd 
+        state: latest
+    - name: enable and start service
+      ansible.builtin.service:
+        name: httpd 
+        state: started
+        enabled: true
+    - name: create homepage content
+      tags: content
+      copy:
+        content: "This web server deployed using ANSIBLE"
+        dest: /var/www/html/index.html
+    - name: open firewall http service port
+      ansible.posix.firewalld:
+        service: http 
+        permanent: true
+        state: enabled
+        immediate: true

@@ -1,0 +1,9 @@
+#Playbook >>>PLAYs >>>Tasks[module]
+--- #indicates start of play
+- name: install app
+  hosts: all
+  tasks:
+    - name: to unstallthe diag pockage
+      ansible.builtin.dnf:
+        name: dialog
+        state: present

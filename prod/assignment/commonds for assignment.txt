@@ -1,0 +1,3 @@
+ansible staging -m ansible.builtin.user  -a "name=auto-user uid=2050 shell=/bin/sh group=devops_engg"
+
+ansible production -m ansible.builtin.dnf -a "name=dialog state=present"

@@ -1,0 +1,7 @@
+---
+- name: using roles vars
+  hosts: all
+  vars:
+    app: nginx
+  roles:
+    - web

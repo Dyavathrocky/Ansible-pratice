@@ -1,0 +1,17 @@
+---
+- name: deploy application on var
+  hosts: web
+  vars:
+    pkg: httpd
+    service: httpd
+    fport: 80
+    #fservice: http/mysql/rdp/https/sshd
+  tasks:
+    - name: import install tasks
+      import_tasks: tasks/installapp.yml
+    - name: import create web page content
+      ansible.builtin.include_tasks: tasks/homepage.yml
+    - name: import service tasks 
+      ansible.builtin.include_tasks: tasks/services.yml
+    - name: import firewall ports
+      ansible.builtin.include_tasks: tasks/firewwall.yml

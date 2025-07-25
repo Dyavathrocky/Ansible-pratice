@@ -1,0 +1,28 @@
+---
+- name: Archive /etc and fetch to control node
+  hosts: all
+  become: true
+  tasks:
+    - name: Remove old archive on managed host
+      file:
+        path: /tmp/configuration.gz
+        state: absent
+
+    - name: Remove old archive on control node
+      delegate_to: localhost
+      become: false
+      file:
+        path: /tmp/backup/configuration.gz
+        state: absent
+
+    - name: Create gzip archive of /etc
+      archive:
+        path: /etc
+        dest: /tmp/configuration.gz
+        format: gz
+
+    - name: Fetch archive to control node
+      fetch:
+        src: /tmp/configuration.gz
+        dest: /tmp/backup/
+        flat: yes

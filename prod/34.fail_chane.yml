@@ -1,0 +1,11 @@
+- name: checking on fail 
+  hosts: node1.example.com
+  tasks:
+    - name: find file using ls
+      command: ls /tmp/rr1.txt
+      register: lsout
+      #changed_when: lsout.rc == 2
+      failed_when: lsout.rc not in [2]
+    - name: debug print lsout
+      debug:
+        var: lsout

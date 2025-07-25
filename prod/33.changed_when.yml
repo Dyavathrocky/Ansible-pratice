@@ -1,0 +1,19 @@
+- name: testing fail module
+  hosts: node1.example.com
+  tasks:
+    - name: uc script copy to targets
+      copy:
+        src: uc.sh
+        mode: 755
+ 
+    - name: run uc.sh in targets 
+      shell: /bin/uc.sh
+      register: ucresult
+      failed_when: ucresult.stdout == "user account creation success"
+      changed_when: ucresult.stdout == "user account creation success"
+      notify: ucdone
+    handlers:
+      - name: ucdone
+        debug:
+          msg: "user created finally"
+          

@@ -1,0 +1,9 @@
+---
+- name: Ensure contact line exists in /tmp/appconfig
+  hosts: all
+  tasks:
+    - name: Add or update contact line in /tmp/appconfig
+      lineinfile:
+        path: /tmp/appconfig
+        line: "contact: admin@myorg.com"
+        create: yes

@@ -1,0 +1,10 @@
+- name: testing fail module
+  hosts: node1.example.com
+  tasks:
+    - name: run uc.sh in target
+      shell: /bin/uc.sh
+      register: ucresult
+      failed_when: ucresult.stdout == "user account creation failed"
+      ignore_errors: 0
+    - name: test uptime
+      shell: uptime

@@ -1,0 +1,15 @@
+- name: testinf wirh size filesize root size
+  hosts: db
+  tasks:
+    - name: testing he dg
+      debug:
+        msg:
+          - "{{ ansible_mounts }}"
+    - name: install maria db if enough space available
+      dnf:
+        name: mariadb-server
+        state: latest
+      loop: "{{ ansible_mounts }}"
+      when: item.mount == "/" and item.size_available >= 200000000
+
+        

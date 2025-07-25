@@ -1,0 +1,23 @@
+- name: Gatherng deatils and facts of the os
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Assemble OS detail string
+      set_fact:
+        os_info: "------------------------------------------------------------ \n\
+                 {{ ansible_default_ipv4.address }} #
+                 {{ ansible_hostname }} #
+                  {{ ansible_distribution }} #
+                  {{ ansible_os_family }}  \n\
+                  ------------------------------------------------------------" 
+        #{{ ansible_default_ipv4.address }} # {{ ansible_hostname }} # {{ ansible_distribution }} # {{ ansible_os_family }}"
+
+    - name: Write OS details to /mnt/osdetails
+      copy:
+        content: "{{ os_info }}"
+        dest: /mnt/osdetails
+        owner: root
+        group: root
+        mode: '0644'

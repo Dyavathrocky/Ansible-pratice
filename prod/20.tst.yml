@@ -1,0 +1,26 @@
+- name: deploy multiple items
+  hosts: node1.example.com
+  vars_files: 
+    #- userlist
+    #- vars_files
+    - userlist_vault
+  tasks:
+    - name: ensure group "some"exists
+      ansible.builtin.group:
+        name: some
+        state: present
+    - name: create multiple user
+      user:
+        name: "{{item.un}}"
+        shell: "{{ item.sh }}"
+        comment: "{{ item.cmnt }}"
+        password: "{{ item.Pass | password_hash('sha512') }}"
+        groups: some
+        state: present
+      loop: "{{ userslist }}"
+        # - un: w12 #moved to vars section
+        #   sh: /bin/sh
+        # - un: w22
+        #   sh: /bin/nologin
+        # - un: w32
+        #   sh: /bin/bash   

@@ -1,0 +1,28 @@
+- name: testing handler
+  hosts: all
+  force_handlers: true
+  tasks:
+    - name: install httpd
+      dnf:
+        name: httpd
+        state: latest
+    - name: create home page
+      copy:
+        content: "welcome to web server deployed using anible changed"
+        dest: /var/www/html/index.html....
+      notify: restarthttpd
+
+    - name: create a webuser1
+      user:
+        name: webuser1
+        state: present
+    - name: deploy another app
+      dnf:
+        name: dialog
+        state: latest
+  handlers:
+    - name: restarthttpd
+      service:
+        name: httpd
+        state: restarted
+        enabled: true

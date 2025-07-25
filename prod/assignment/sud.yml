@@ -1,0 +1,12 @@
+- name: Read /etc/sudoers.d/admins file
+  hosts: all
+  #become: true  # Needed to read sudoers file
+  tasks:
+    - name: rad and save in to Variable as r1 for contents of /etc/sudoers.d/admins
+      ansible.builtin.shell: 
+        cmd: cat /etc/sudoers.d/admins
+      register: r1
+
+    - name: Print contents of sudoers admins file
+      ansible.builtin.debug:
+        msg: "{{ r1.stdout }}" #read only the lines , to reads all the proprities remove stdout

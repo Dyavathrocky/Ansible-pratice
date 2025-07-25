@@ -1,0 +1,4 @@
+someappconfig:
+port: 1234
+servicename:test1234eefff
+ddddd

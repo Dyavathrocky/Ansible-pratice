@@ -1,0 +1,32 @@
+#Playbook >>>PLAYs >>>Tasks[module]
+--- #indicates start of play
+- name: play1 get uptime
+  hosts: all #target systems
+  tasks: 
+    - name: get uptime of servers
+      command: uptime
+    - name: get id of user account
+      command: id
+    - name: get diskfree report
+      shell: df -h 
+
+- name: play2 install some app
+  hosts: web 
+  tasks:
+    - name: install tftp
+      dnf:
+        name: tftp
+        state: latest
+#ansible web -m dnf -a 'name=tftp state=latest'
+
+- name: play3 for dbservers
+  hosts: db 
+  tasks:
+    - name: get ipadd
+      command: hostname -i
+
+- name: play for check servername
+  hosts: all
+  tasks: 
+    - name: get host name of the server
+      command: hostname

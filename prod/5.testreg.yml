@@ -1,0 +1,38 @@
+- name: gather facts of managed nodes
+  hosts: all
+  tasks:
+    - name: use setup to gather facts
+      setup:
+        gather_subset:
+          - all
+      register: register1
+    - name: use debug module to display the result
+      ansible.builtin.debug:
+        #var: register1
+        msg: 
+          - "The IP address {{ register1.ansible_facts.ansible_all_ipv4_addresses }} is of {{  register1.ansible_facts.ansible_nodename }}"
+          - "the proc arch is {{ register1.ansible_facts.ansible_architecture }}"
+    - name: use debug get vlures for os
+      ansible.builtin.debug:
+        #var : regsier1 
+        msg:
+          - "the Host distribtuion is {{ register1.ansible_facts.ansible_distribution }}"
+          - "the Host distro version {{  register1.ansible_facts.ansible_distribution_version }}"
+          - "The host fqdn version with hostname {{ register1.ansible_facts.ansible_nodename  }} and {{ register1.ansible_facts.ansible_fqdn }}"
+
+
+- name: create disk free report
+  hosts: all
+  tasks:
+    - name: get use shell module
+      shell: df -h
+      register: r1
+    # - name: debug of r1
+    #   debug:
+    #     #var: r1"
+    #     msg: "{{ r1.stdout }}"
+    - name: dump r1.stdout to file
+      copy:
+        content: "{{ r1.stdout }}"
+        dest: /tmp/dfree.txt
+

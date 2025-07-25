@@ -1,0 +1,5 @@
+- name: enable and start service
+  ansible.builtin.service:
+    name: "{{service}}"
+    state: started
+    enabled: true

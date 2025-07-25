@@ -1,0 +1,10 @@
+- name: fetch disk report , alter the motd
+  hosts: all
+  tasks:
+    - name: append new new line
+      ansible.builtin.lineinfile:
+        path: /etc/motd
+        line: "........ added using the ansible.......... \n wtest what is this "
+        create: yes
+        state: present
+

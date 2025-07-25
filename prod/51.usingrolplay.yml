@@ -1,0 +1,7 @@
+---
+- name: using roles vars
+  hosts: web
+  vars:
+    app: lftp
+  roles:
+    - webrole

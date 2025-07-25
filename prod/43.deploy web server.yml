@@ -1,0 +1,18 @@
+- name: deploy web server
+  hosts: all
+
+  tasks:
+    - name: install httpd
+      dnf:
+        name: httpd
+        state: latest
+
+    - name: create homepafge based on jinga 2
+      template:
+        src: 43.j2template.j2
+        dest: /var/www/html/index.html
+    - name: staret httpd services
+      service:
+        name: httpd
+        state: started
+        enabled: true

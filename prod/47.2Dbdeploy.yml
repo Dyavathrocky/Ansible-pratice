@@ -1,0 +1,18 @@
+- name: install mariadb
+  hosts: db
+  tasks:
+    - name: install mariadb-server app
+      ansible.builtin.package:
+        name: mariadb-server 
+        state: latest
+    - name: start mariadb service 
+      ansible.builtin.systemd:
+        name: mariadb
+        state: started
+        enabled: true
+    - name: open firewall port for mysql/3306/tcp
+      ansible.posix.firewalld:
+        port: 3306/tcp 
+        state: enabled
+        immediate: true
+        permanent: true

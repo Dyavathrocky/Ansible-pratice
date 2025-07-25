@@ -1,0 +1,4 @@
+- name : hck piockage
+  tasks:
+    - name: "install {{ pkg }}"
+    

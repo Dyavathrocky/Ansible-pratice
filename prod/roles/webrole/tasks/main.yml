@@ -1,0 +1,8 @@
+---
+# tasks file for webrole
+- name: install {{ app }}
+  dnf:
+    name: "{{ app }}"
+    state: latest
+  notify: h1
+  when: ansible_os_family == "RedHat"

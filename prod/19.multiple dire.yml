@@ -1,0 +1,10 @@
+- name : creating multiple folders
+  hosts: node1.example.com
+  tasks:
+    - name: create mdi
+      file:
+        path:
+          - /tmp/dir1
+          - /tmp/dir2
+          - /tmp/dir3
+        state : directory

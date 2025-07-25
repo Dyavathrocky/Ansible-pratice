@@ -1,0 +1,17 @@
+- name: install file r1 if filr r1.stat.exists
+  hosts: all
+  tasks:
+    - name: check file r1.stat exisit
+      stat:
+        path: "/tmp/file123.txt"
+      register: r1
+    - name: debug
+      debug:
+        var: r1
+    - name: deploy dialog if file not exist
+      dnf:
+        name: dialog
+        state: latest
+      when: r1.stat.exists is false
+
+

@@ -1,0 +1,20 @@
+- name: install app based on the condition
+  hosts: web
+  vars:
+    vesrionlist:
+      - "9"
+      - "10"
+      - "8"
+  tasks: 
+    - name: gather facts using debug
+      debug:
+        msg:
+          - "the os is {{ ansible_os_family }}"
+          - " the distro is {{ ansible_distribution }} he version is {{ ansible_distribution_version }}"
+          - "the total memory {{ ansible_memtotal_mb  }}"
+    - name: install httpd if os is redhat
+      dnf:
+        #name: httpd
+        name:  dialog
+        state: latest
+      when:  ansible_memtotal_mb  >= 4000 and ansible_distribution_version in vesrionlist

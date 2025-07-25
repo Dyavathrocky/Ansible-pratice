@@ -1,0 +1,77 @@
+- name: Web Application Deployment with Block, Rescue, and Always
+  hosts: web
+  gather_facts: no
+  vars:
+    temp_file: /tmp/nginx_temp.conf
+    backup_file: /etc/nginx/nginx.conf.bakk
+  tasks:
+    - name: Deploy Web Application
+      block:
+        # Block: Main tasks
+        - name: Install nginx
+          yum:
+            name: nginx
+            state: present
+
+        - name: Backup existing nginx configuration
+          copy:
+            src: /etc/nginx/nginx.conf
+            dest: "{{ backup_file }}"
+            remote_src: yes
+
+        - name: Create temporary nginx configuration file
+          copy:
+            content: |
+              events {
+                  worker_connections 1024;
+              }
+
+              http {
+                  server {
+                      listen 80;
+                      server_name localhost;
+
+                      location / {
+                          root /usr/share/nginx/html;
+                          index index.html;
+                      }
+                  }
+              }
+            dest: "{{ temp_file }}"
+
+        - name: Deploy nginx configuration
+          copy:
+            src: "{{ temp_file }}"
+            dest: /etc/nginx/nginx.conf
+            remote_src: yes
+
+        - name: Restart nginx service BLOCK
+          service:
+            name: nginx
+            state: restarted
+
+      rescue:
+        # Rescue: Actions to take if a task in the block fails
+        - name: Restore the original nginx configuration - Rescue
+          copy:
+            src: "{{ backup_file }}"
+            dest: /etc/nginx/nginx.conf"
+            remote_src: yes
+        - name: Stop nginx service
+          service:
+            name: nginx
+            state: stopped
+
+        - name: Notify failure
+          debug:
+            msg: "Deployment failed. Rolled back to the original configuration."
+
+      always:
+      
+        - name: get the final status of nginx
+          service_facts:
+        
+        - name: get the status nginx
+          debug:
+            #var: ansible_facts.services
+            msg: "the status of niginx now is {{ ansible_facts.services['nginx.service'].state }}" 

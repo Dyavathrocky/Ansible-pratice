@@ -1,0 +1,15 @@
+- name: Retrieve and display root filesystem information
+  hosts: web
+  gather_facts: yes
+  tasks:
+    - name: Extract root filesystem details
+      ansible.builtin.set_fact:
+        root_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/') | first }}"
+
+    - name: Debug root filesystem information
+      ansible.builtin.debug:
+        msg:
+          - "Root Filesystem Device: {{ root_mount.device }}"
+          - "Root Filesystem Type: {{ root_mount.fstype }}"
+          - "Root Filesystem Size: {{ root_mount.size_total | human_readable }}"
+          - "Root Filesystem Available: {{ root_mount.size_available | human_readable }}"

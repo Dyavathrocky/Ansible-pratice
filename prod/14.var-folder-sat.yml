@@ -1,0 +1,14 @@
+- name: Create a folder /tmp folder
+  hosts:  all
+  tasks:
+    - name: create folder in /tmp
+      file:
+        path:  "/tmp/{{fn}}"
+        state:  directory
+    - name: get stat info
+      stat:
+        path: "/tmp/{{fn}}"
+      register:  r1
+    - name: stat info
+      debug:
+        var: r1

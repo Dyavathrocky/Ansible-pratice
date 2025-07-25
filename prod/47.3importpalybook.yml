@@ -1,0 +1,12 @@
+---
+- name: depoy web and db servers
+  hosts: all
+  tasks:
+    - name: get uptime
+      shell: uptime
+- name: import web playbook
+  ansible.builtin.import_playbook: 47.1webdeploy.yml
+- name: import DB playbook
+  ansible.builtin.import_playbook: 47.2Dbdeploy.yml
+
+    
