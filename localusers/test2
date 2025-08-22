@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+# check the userid
+echo "your user id is ${UID}"
+
+#check the username
+echo "your user name is $(id -un)"
+
+#check the user is root or not
+
+if [[ "${UID}" -eq 0 ]]
+then 
+echo "your root"
+else
+echo "your not root"
+fi
